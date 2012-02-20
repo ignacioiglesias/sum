@@ -6,10 +6,10 @@ function Lexer() {
     'identifier': /([a-z]+)*/,
     'whitespace': /^[^\n\S]+/,
     'number': /^([0-9]+)/,
-    'indent': /^(?:\n[^\n\S]*)+/
-  }
-
-  var keywords = ['if', 'def', 'print'];
+    'indent': /^(?:\n[^\n\S]*)+/,  
+    'literal': /^[\{\}\=]/
+  };
+  var keywords = ['def', 'if', 'else', 'print'];
   var tokens = [];
 
   function identifier() {
@@ -23,7 +23,6 @@ function Lexer() {
       } else {
         tokens.push(['IDENTIFIER', value]);
       }
-
       return value.length;
     }
   }
@@ -75,10 +74,18 @@ function Lexer() {
     var token = patterns.indent.exec(chunk);
     if(token) {
       if(token[0] === '\n') {
-        tokens.push(['NEWLINE', token[0]]);
+        //tokens.push(['NEWLINE', token[0]]);
       } else {
-        console.dir(tokens);
+        //tokens.push(['WHITESPACE', token[0]]);
       } 
+      return token[0].length;
+    }
+  }
+
+  function literal() {
+    var token = patterns.literal.exec(chunk);
+    if(token[0]) {
+      tokens.push([token[0], token[0]]);
       return token[0].length;
     }
   }
@@ -86,19 +93,19 @@ function Lexer() {
   function tokenize(code) {
     var diff;
     while(chunk = code.slice(pos)) {
-      diff = identifier() || string() || number() || whitespace() || newline();
+      diff = identifier() || string() || number() || whitespace() || newline() || literal();
       if(!diff) {
-        console.dir(tokens);
         throw('Tokenizer failed. Cannot tokenize: ' + chunk);
       }
       pos += diff;
     }
     return tokens;
   }
-
   return {
     'tokenize': tokenize
   };
 }
 
-module.exports = Lexer;
+if(typeof module !== 'undefined') {
+  module.exports = Lexer;  
+}

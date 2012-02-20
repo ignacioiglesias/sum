@@ -1,1 +1,7 @@
-print "hola mundo"
+def fun {
+	print "Hello world"
+}
+
+def foo {
+	a = 'Test'
+}
