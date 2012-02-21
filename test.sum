@@ -2,6 +2,6 @@ def fun {
 	print "Hello world"
 }
 
-def foo {
-	a = 'Test'
+def foo(name) {
+	print "Hello", name
 }

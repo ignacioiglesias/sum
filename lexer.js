@@ -7,7 +7,7 @@ function Lexer() {
     'whitespace': /^[^\n\S]+/,
     'number': /^([0-9]+)/,
     'indent': /^(?:\n[^\n\S]*)+/,  
-    'literal': /^[\{\}\=]/
+    'literal': /^[\{\}\=\(\)\[\]\,]/
   };
   var keywords = ['def', 'if', 'else', 'print'];
   var tokens = [];
